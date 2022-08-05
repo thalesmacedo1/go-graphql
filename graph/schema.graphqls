@@ -37,13 +37,13 @@ input NewChapter {
 }
 
 type Query {
-    categories: [Category]
-    courses: [Course]
-    chapters: [Chapter]
+  categories: [Category]
+  courses: [Course]
+  chapters: [Chapter]
 }
 
 type Mutation {
-    createCategory(input: NewCategory!): Category!
-    createCourse(input: NewCourse!): Course!
-    createChapter(input: NewChapter!): Chapter!
+  createCategory(input: NewCategory!): Category!
+  createCourse(input: NewCourse!): Course!
+  createChapter(input: NewChapter!): Chapter!
 }
