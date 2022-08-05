@@ -12,6 +12,32 @@ import (
 	"github.com/thalesmacedo1/go-graphql/graph/model"
 )
 
+// Courses is the resolver for the courses field.
+func (r *categoryResolver) Courses(ctx context.Context, obj *model.Category) ([]*model.Course, error) {
+	var courses []*model.Course
+
+	for _, v := range r.Resolver.Courses {
+		if v.Category.ID == obj.ID {
+			courses = append(courses, v)
+		}
+	}
+
+	return courses, nil
+}
+
+// Chapters is the resolver for the chapters field.
+func (r *courseResolver) Chapters(ctx context.Context, obj *model.Course) ([]*model.Chapter, error) {
+	var chapters []*model.Chapter
+
+	for _, v := range r.Resolver.Chapters {
+		if v.Course.ID == obj.ID {
+			chapters = append(chapters, v)
+		}
+	}
+
+	return chapters, nil
+}
+
 // CreateCategory is the resolver for the createCategory field.
 func (r *mutationResolver) CreateCategory(ctx context.Context, input model.NewCategory) (*model.Category, error) {
 	category := model.Category{
@@ -79,11 +105,19 @@ func (r *queryResolver) Chapters(ctx context.Context) ([]*model.Chapter, error) 
 	return r.Resolver.Chapters, nil
 }
 
+// Category returns generated.CategoryResolver implementation.
+func (r *Resolver) Category() generated.CategoryResolver { return &categoryResolver{r} }
+
+// Course returns generated.CourseResolver implementation.
+func (r *Resolver) Course() generated.CourseResolver { return &courseResolver{r} }
+
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 
 // Query returns generated.QueryResolver implementation.
 func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
+type categoryResolver struct{ *Resolver }
+type courseResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
